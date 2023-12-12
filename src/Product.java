@@ -1,8 +1,11 @@
-public class Product {
+import java.util.Date;
+ abstract class Product {
     private String prodID;
     private String prodName;
     private int prodQuantity;
     private double prodPrice;
+
+
 
     public Product(String prodID, String prodName, int prodQuantity, double prodPrice) {
         this.prodID = prodID;
@@ -10,6 +13,7 @@ public class Product {
         this.prodQuantity = prodQuantity;
         this.prodPrice = prodPrice;
     }
+
 
     public String getProdID() {
         return prodID;
@@ -42,4 +46,6 @@ public class Product {
     public void setProdPrice(double prodPrice) {
         this.prodPrice = prodPrice;
     }
-}
+
+     abstract void save();
+ }

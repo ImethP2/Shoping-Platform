@@ -1,10 +1,105 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class WestminsterShoppingManager implements ShoppingManager {
-    public static int productCount = 0;
+    public static int electCount = 0;
+    public static int clothCount = 0;
+    public static int productCount = electCount + clothCount;
     public static Product[] products = new Product[50];
+
+    public static String warrantyUpdate() {
+        String warrantyPeriod = "00";
+        Scanner input = new Scanner(System.in);
+        Scanner inputINT = new Scanner(System.in); /*This is to avoid the error that occurs when you enter a string instead of an integer*/
+        System.out.println("What kind of a warranty does this product have?");
+        System.out.println("""
+                1. Life time warranty
+                2. Limited warranty
+                3. No warranty""");
+        try {
+            int warrantyType = inputINT.nextInt();
+            if (warrantyType > 0 && warrantyType < 4) {
+                if (warrantyType == 1) {
+                    warrantyPeriod = "life time";
+                } else if (warrantyType == 2) {
+                    System.out.println("Enter the warranty period: (mm/yy)");
+                    warrantyPeriod = input.nextLine();
+                    String[] warrantyPeriodArray = warrantyPeriod.split("/");
+                    int warrantyPeriodMonth = Integer.parseInt(warrantyPeriodArray[0]);
+                    int warrantyPeriodYear = Integer.parseInt(warrantyPeriodArray[1]);
+                    if (warrantyPeriodMonth >= 0 && warrantyPeriodMonth <= 12 && warrantyPeriodYear >= 0 && warrantyPeriodYear < 100) {
+                        warrantyPeriod = String.valueOf(warrantyPeriodMonth + warrantyPeriodYear * 12);
+                    }
+                } else if (warrantyType == 3) {
+                    System.out.println("This product has no warranty.");
+                }
+            } else {
+                System.err.println("Please enter a valid option.");
+                warrantyPeriod = warrantyUpdate();
+            }
+        } catch (Exception e) {
+            System.err.println("Please enter a valid option.");
+            warrantyPeriod = warrantyUpdate();
+        }
+        return warrantyPeriod;
+    }
+
+    public static Clothing clothingDetails() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        Scanner inputINT = new Scanner(System.in);
+
+        String prodID = clothCount + "CL";
+
+        System.out.println("Enter the product name:");
+        String prodName = input.nextLine();
+
+        System.out.println("Enter the product quantity:");
+        int prodQuantity = inputINT.nextInt();
+
+        System.out.println("Enter the product price:");
+        double prodPrice = inputINT.nextDouble();
+
+        System.out.println("Enter the product size:");
+        String prodSize = input.nextLine();
+
+        System.out.println("Enter the product color:");
+        String prodColor = input.nextLine();
+
+        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
+
+        return clothing;
+    }
+
+    public static Electronics electronicDetails() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        Scanner inputINT = new Scanner(System.in);
+
+        String prodID = electCount + "EL";
+
+        System.out.println("Enter the product name:");
+        String prodName = input.nextLine();
+
+        System.out.println("Enter the product quantity:");
+        int prodQuantity = inputINT.nextInt();
+
+        System.out.println("Enter the product price:");
+        double prodPrice = inputINT.nextDouble();
+
+        System.out.println("Enter the product brand name:");
+        String prodBrandName = input.nextLine();
+
+        String warrantyPeriod = warrantyUpdate();
+
+        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
+
+        return electronics;
+    }
+
     public void addProduct() throws ParseException, IOException {
         //products should need to add to the null indexes in the array
         //search for null indexes nd if not print not enough storage
@@ -16,14 +111,15 @@ public class WestminsterShoppingManager implements ShoppingManager {
         int prodType = inputINT.nextInt();
         if (prodType == 1) {
             Clothing clothing = clothingDetails();
-            for (int i = 0; i<50; i++){
-                try{
-                    if (products[i] == null){
+            for (int i = 0; i < 50; i++) {
+                try {
+                    if (products[i] == null) {
                         products[i] = clothing;
-                        productCount++;
+                        clothCount++;
+                        TextFileDBHandler.addProduct(clothing);
                         break;
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     System.err.println("The product list is full. Please delete a data queue to add this data row.");
                     try {
                         managerMenu();
@@ -35,14 +131,15 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
         } else if (prodType == 2) {
             Electronics electronics = electronicDetails();
-            for (int i = 0; i<50; i++){
-                try{
-                    if (products[i] == null){
+            for (int i = 0; i < 50; i++) {
+                try {
+                    if (products[i] == null) {
                         products[i] = electronics;
-                        productCount++;
+                        electCount++;
+                        TextFileDBHandler.addProduct(electronics);
                         break;
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     System.err.println("The product list is full. Please delete a data queue to add this data row.");
                     try {
                         managerMenu();
@@ -62,7 +159,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         //Scanner inputINT = new Scanner(System.in);
         System.out.println("What type of product would you like to delete?");
         String prodType = input.nextLine().toLowerCase();
-        if (prodType.equals("clothing")||prodType.equals("electronics")) {
+        if (prodType.equals("clothing") || prodType.equals("electronics")) {
             if (prodType.equals("clothing")) {
                 for (Product product : products) {
                     if (product instanceof Clothing) {
@@ -81,6 +178,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
             for (int i = 0; i < productCount; i++) {
                 if (products[i].getProdID().equals(prodID)) {
                     products[i] = null;
+                    productCount--;
                     System.out.println("Product deleted");
                 }
             }
@@ -91,9 +189,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     /**
      * This method is used to update the quantity of the product
+     *
      * @return the quantity of the product
      */
-    public int quantity(){
+    public int quantity() {
         //return the quantity
         int Quantity = 0;
         Scanner inputINT = new Scanner(System.in);
@@ -103,71 +202,39 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 1. Add to stock
                 2. Remove from stock
                 """);
-        try{
+        try {
             int option = inputINT.nextInt();
-            switch (option){
-                case 1 ->{
+            switch (option) {
+                case 1 -> {
                     System.out.println("How much stock that you want to add?");
                     int addStock = inputINT.nextInt();
                     Quantity = Quantity + addStock;
                     return Quantity;
-                }case 2 -> {
+                }
+                case 2 -> {
                     System.out.println("How much stock that you want to reduce?");
                     int deductStock = inputINT.nextInt();
                     Quantity -= deductStock;
                     return Quantity;
-                }default -> throw new IllegalStateException("Unexpected value: " + option);
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + option);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    public Double price(){
+
+    public Double price() {
         //update the price
         // just ask the price
-        //return the quantity
+        //return the price
         Scanner inputINT = new Scanner(System.in);
         System.out.println("What is the new price of the product?");
         Double Price = inputINT.nextDouble();
         return Price;
     }
-    public static String warrantyUpdate() {
-        String warrantyPeriod = "00";
-        Scanner input = new Scanner (System.in);
-        Scanner inputINT = new Scanner (System.in); /*This is to avoid the error that occurs when you enter a string instead of an integer*/
-        System.out.println("What kind of a warranty does this product have?");
-        System.out.println("""
-                1. Life time warranty
-                2. Limited warranty
-                3. No warranty""");
-        try{
-            int warrantyType = inputINT.nextInt();
-            if (warrantyType > 0 && warrantyType < 4){
-                if (warrantyType == 1) {
-                    warrantyPeriod = "life time";
-                }else if (warrantyType == 2) {
-                    System.out.println("Enter the warranty period: (mm/yy)");
-                    warrantyPeriod = input.nextLine();
-                    String[] warrantyPeriodArray = warrantyPeriod.split("/");
-                    int warrantyPeriodMonth = Integer.parseInt(warrantyPeriodArray[0]);
-                    int warrantyPeriodYear = Integer.parseInt(warrantyPeriodArray[1]);
-                    if (warrantyPeriodMonth >= 0 && warrantyPeriodMonth <= 12 && warrantyPeriodYear >= 0 && warrantyPeriodYear < 100) {
-                        warrantyPeriod = String.valueOf(warrantyPeriodMonth + warrantyPeriodYear * 12);
-                    }
-                }else if (warrantyType == 3) {
-                    System.out.println("This product has no warranty.");
-                }
-            }else {
-                System.err.println("Please enter a valid option.");
-                warrantyPeriod = warrantyUpdate();
-            }
-        }catch (Exception e){
-            System.err.println("Please enter a valid option.");
-            warrantyPeriod = warrantyUpdate();
-        }
-        return warrantyPeriod;
-    }
-    public void updateProduct(){
+
+    public void updateProduct() {
         Scanner input = new Scanner(System.in);
         Scanner inputINT = new Scanner(System.in);
         System.out.println("What type of product you want to update?");
@@ -179,35 +246,39 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     1. Quantity
                     2. Price
                     """);
-            try{
+            try {
                 int option = inputINT.nextInt();
                 for (Product product : products) {
                     if (product != null && product instanceof Clothing) {
                         System.out.println(product.getProdID() + " - " + product.getProdName() + " - " + product.getProdQuantity() + " - " + product.getProdPrice());
                         System.out.println("Enter the productID");
                         String prodID = input.nextLine().toUpperCase();
-                        for (Product clothes:products) {
+                        for (Product clothes : products) {
                             if (clothes != null) {
                                 //check for the project id and update the requested part of the object
-                                if (Objects.equals(clothes.getProdID(), prodID)){
-                                    switch (option){
-                                        case 1 ->{
+                                if (Objects.equals(clothes.getProdID(), prodID)) {
+                                    switch (option) {
+                                        case 1 -> {
                                             //int Quantity = quantity();
                                             //quantity(Quantity);
                                             clothes.setProdQuantity(quantity());
+                                            TextFileDBHandler.updateClothes((Clothing) clothes, prodID);
 
-                                        }case 2 ->{
+                                        }
+                                        case 2 -> {
                                             Double Price = 0.00;
                                             price();
                                             clothes.setProdPrice(Price);
-                                        }default -> throw new IllegalStateException("Unexpected value: " + option);
+                                            TextFileDBHandler.updateClothes((Clothing) clothes, prodID);
+                                        }
+                                        default -> throw new IllegalStateException("Unexpected value: " + option);
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.err.println("enter a valid input");
             }
 
@@ -218,36 +289,44 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     2. Price
                     3. Warranty Period
                     """);
-            try{
+            try {
                 int option = inputINT.nextInt();
                 for (Product product : products) {
                     if (product != null && product instanceof Electronics) {
                         System.out.println(product.getProdID() + " - " + product.getProdName() + " - " + product.getProdQuantity() + " - " + product.getProdPrice());
                         System.out.println("Enter the productID");
                         String prodID = input.nextLine();
-                        for (Product electronics:products) {
+                        for (Product electronics : products) {
                             if (electronics != null) {
                                 //check for the project id and update the requested part of the object
-                                if (electronics.getProdID() == prodID){
-                                    switch (option){
-                                        case 1 ->{
+                                if (electronics.getProdID() == prodID) {
+                                    switch (option) {
+                                        case 1 -> {
                                             //int Quantity = 0;
                                             quantity();
                                             electronics.setProdQuantity(quantity());
+                                            TextFileDBHandler.updateElectronics((Electronics) electronics, prodID);
 
-                                        }case 2 ->{
+                                        }
+                                        case 2 -> {
                                             electronics.setProdPrice(price());
-                                        }case 3 ->{
-                                            ((Electronics) electronics).setWarrantyDate(warrantyUpdate());
+                                            TextFileDBHandler.updateElectronics((Electronics) electronics, prodID);
 
-                                        }default -> throw new IllegalStateException("Unexpected value: " + option);
+                                        }
+                                        case 3 -> {
+                                            ((Electronics) electronics).setWarrantyDate(warrantyUpdate());
+                                            TextFileDBHandler.updateElectronics((Electronics) electronics, prodID);
+
+
+                                        }
+                                        default -> throw new IllegalStateException("Unexpected value: " + option);
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.err.println("enter a valid input");
             }
 
@@ -255,9 +334,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.err.println("Invalid input");
         }
     }
+
     public void printProductList() {
         for (Product product : products) {
-            if (product != null){
+            if (product != null) {
                 System.out.println(product);
             }
         }
@@ -266,9 +346,31 @@ public class WestminsterShoppingManager implements ShoppingManager {
     public void sortProductList() {
         // TODO implement here
     }
+
+    //TODO: find why does this not print the first line (0EL)
+    //it only prints the last line
+    //fix print***
+/*
+    public static Product[] electronicObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
+        String prodBrandName = productArray[4];
+        String warrantyPeriod = productArray[5];
+        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
+        products[productCount] = electronics;
+        return products;
+    }
+    public static Product[] clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
+        String prodSize = productArray[4];
+        String prodColor = productArray[5];
+        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
+        products[productCount] = clothing;
+        return products;
+    }
+*/
+
     public void saveProductList() {
 
     }
+
     public void loadProductList() throws IOException {
         // TODO implement here
         // Reading the person and ticket data
@@ -279,7 +381,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         try {
             File Product = new File("productList.txt");
             Scanner prodScanner = new Scanner(Product);
-            while(prodScanner.hasNextLine()) {
+            while (prodScanner.hasNextLine()) {
                 prodScanner.nextLine();
                 product_count++;
             }
@@ -329,82 +431,15 @@ public class WestminsterShoppingManager implements ShoppingManager {
         //person_id=product_count;
         line_person.close();
         for (Product product : products) {
-            if (product != null){
+            if (product != null) {
                 System.out.println(product);
             }
         }
     }
 
-    //TODO: find why does this not print the first line (0EL)
-    //it only prints the last line
-    //fix print***
-    public static Product[] electronicObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
-        String prodBrandName = productArray[4];
-        String warrantyPeriod = productArray[5];
-        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
-        products[productCount] = electronics;
-        return products;
-    }
-    public static Product[] clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
-        String prodSize = productArray[4];
-        String prodColor = productArray[5];
-        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
-        products[productCount] = clothing;
-        return products;
-    }
-
-    public static Clothing clothingDetails() throws ParseException {
-        Scanner input = new Scanner(System.in);
-        Scanner inputINT = new Scanner(System.in);
-
-        String prodID = productCount + "CL";
-
-        System.out.println("Enter the product name:");
-        String prodName = input.nextLine();
-
-        System.out.println("Enter the product quantity:");
-        int prodQuantity = inputINT.nextInt();
-
-        System.out.println("Enter the product price:");
-        double prodPrice = inputINT.nextDouble();
-
-        System.out.println("Enter the product size:");
-        String prodSize = input.nextLine();
-
-        System.out.println("Enter the product color:");
-        String prodColor = input.nextLine();
-
-        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
-
-        return clothing;
-    }
-    public static Electronics electronicDetails() throws ParseException {
-        Scanner input = new Scanner(System.in);
-        Scanner inputINT = new Scanner(System.in);
-
-        String prodID = productCount + "EL";
-
-        System.out.println("Enter the product name:");
-        String prodName = input.nextLine();
-
-        System.out.println("Enter the product quantity:");
-        int prodQuantity = inputINT.nextInt();
-
-        System.out.println("Enter the product price:");
-        double prodPrice = inputINT.nextDouble();
-
-        System.out.println("Enter the product brand name:");
-        String prodBrandName = input.nextLine();
-
-        String warrantyPeriod = warrantyUpdate();
-
-        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
-
-        return electronics;
-    }
     public void managerMenu() throws ParseException, IOException {
         System.out.println("""
-                Welcome to Westminster Shopping Manager
+
                 Please select an option:
                 1. Add a product
                 2. Update a product
@@ -420,13 +455,15 @@ public class WestminsterShoppingManager implements ShoppingManager {
             case 1 -> {
                 addProduct();
 
-            }case 2 -> {
+            }
+            case 2 -> {
                 updateProduct();
             }
             case 3 -> {
                 deleteProduct();
 
-            }case 4 -> {
+            }
+            case 4 -> {
                 printProductList();
             }
             case 5 -> {
@@ -436,7 +473,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 TextFileDBHandler.loadProductList();
             }
             case 7 -> {
-                TextFileDBHandler.saveProductList();
                 System.exit(0);
             }
             default -> throw new IllegalStateException("Unexpected value: " + option);

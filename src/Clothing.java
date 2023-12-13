@@ -36,6 +36,7 @@ public class Clothing extends Product{
             bufferedWriter.write(getProdID() + "-" + getProdName() + "-" + getProdQuantity() + "-" + getProdPrice() + "-" + getSize() + "-" + getColor());
             bufferedWriter.newLine();
             bufferedWriter.close();
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();

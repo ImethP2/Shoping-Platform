@@ -53,7 +53,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         Scanner input = new Scanner(System.in);
         Scanner inputINT = new Scanner(System.in);
 
-        String prodID = clothCount + "CL";
+        String prodID = clothCount+1 + "CL";
 
         System.out.println("Enter the product name:");
         String prodName = input.nextLine();
@@ -79,7 +79,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         Scanner input = new Scanner(System.in);
         Scanner inputINT = new Scanner(System.in);
 
-        String prodID = electCount + "EL";
+        String prodID = electCount + 1 + "EL";
 
         System.out.println("Enter the product name:");
         String prodName = input.nextLine();
@@ -470,7 +470,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 TextFileDBHandler.saveProductList();
             }
             case 6 -> {
-                TextFileDBHandler.loadProductList();
+                if (products.length == TextFileDBHandler.countProduct()){
+                    System.err.println("DataBase is already loaded to the software");
+                }else {
+                    TextFileDBHandler.loadProductList();
+                }
             }
             case 7 -> {
                 System.exit(0);

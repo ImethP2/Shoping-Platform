@@ -3,3 +3,5 @@
 1EL-qwe-123-234.0-asd-123
 2EL-S23 Ultra-100-435000.0-Samsung-48
 2CL-tshirts-150-3500.0-L-black4CL-shirts-200-5000.0-XL-rec
+3CL-OS Tshirts-100-2800.0-L-Blue
+4CL-Off Shoulders-300-4000.0-S-White

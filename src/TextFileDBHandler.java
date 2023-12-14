@@ -2,11 +2,8 @@ import java.io.*;
 
 /**
  * TODO
- * add products to the array
- * check the countProduct() method
- * the output is not correct
  *
- * handle the prodID error
+ *
  */
 public class TextFileDBHandler {
     public static void createFile() throws IOException{
@@ -66,19 +63,26 @@ public class TextFileDBHandler {
                     double prodPrice = Double.parseDouble(productArray[3]);
 
                     if (prodID.contains("CL")) {
-                        WestminsterShoppingManager.clothCount++;
+                        //WestminsterShoppingManager.clothCount++;
                         clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else if (prodID.contains("EL")) {
-                        WestminsterShoppingManager.electCount++;
+                        //WestminsterShoppingManager.electCount++;
                         electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else {
-                        System.err.println("Text File Save Error");
+                        System.err.println("Text File load Error");
                     }
 
                 }
-                for (Product product: WestminsterShoppingManager.products){
-
-                }
+/*                for (Product product: WestminsterShoppingManager.products){
+                    if (product instanceof Clothing){
+                        WestminsterShoppingManager.clothCount++;
+                    }else if (product instanceof Electronics){
+                        WestminsterShoppingManager.electCount++;
+                    }
+                }*/
+                System.out.println(WestminsterShoppingManager.clothCount);
+                System.out.println(WestminsterShoppingManager.electCount);
+                System.out.println(WestminsterShoppingManager.productCount);
                 prodLineReader.close();
 
             } catch (FileNotFoundException e) {
@@ -93,15 +97,20 @@ public class TextFileDBHandler {
         String warrantyPeriod = productArray[5];
         Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
         WestminsterShoppingManager.products[productCount] = electronics;
+//        WestminsterShoppingManager.electCount++;electCount
+
     }
     public static void clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
         String prodSize = productArray[4];
         String prodColor = productArray[5];
         Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
         WestminsterShoppingManager.products[productCount] = clothing;
+//        WestminsterShoppingManager.clothCount++;
     }
     public static int countProduct() throws IOException {
         File file = new File("productList.txt");
+        WestminsterShoppingManager.clothCount=0;
+        WestminsterShoppingManager.electCount=0;
 
         int product_count = 0;
         String prodLine;

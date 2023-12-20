@@ -1,0 +1,19 @@
+#first view
+1. Do you want to load the previous product list? (Y/N) (if any other option was entered it will get terminated)
+
+#Add a product
+1. Please select an option: (int only)
+2. What type of product would you like to add? (int only)
+3. What type of product would you like to add? (if any other value was entered it will go back to the previous menu)
+4. Enter the product quantity: (int only)
+5. Enter the product size: (sizes should be xxs, xs, s, m, l, xl, xxl, xxxl)
+
+#Update a product
+1. What type of product you want to update? (make it  a int selection (like #add a product))
+2. what do you want to update in a clothing product? (int only)
+3. what do you want to update in a clothing product? (if i entered a different int that is not in the list it will ask the proid and then only it will show the error msg))
+
+#Update. Clothing
+1. only shows the product id one by one (enter a wrong product id to create this error)
+2. What do you want to do to the quantity of the product? (int only)
+3. What do you want to do to the quantity of the product? (if i entered a different int that is not in the list it will show the previous menu and then only it will show the error msg))

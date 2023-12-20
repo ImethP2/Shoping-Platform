@@ -29,6 +29,7 @@ public class Main {
             }while (true);
         }else {
             System.err.println("Invalid Input");
+            main(args);
         }
     }
 }

@@ -2,8 +2,9 @@ package com.ClientSide;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
-public class SignInPanel {
+public class SignInPanel extends ClientFrame{
     public String title;
 
     JPanel SIPInit(){
@@ -34,6 +35,8 @@ public class SignInPanel {
         JButton signinBtn = new JButton("Sign-IN");
         signinBtn.addActionListener(e -> {
             //TODO : Sign In
+            SchppingCenterPanel shoppingCenterPanel = new SchppingCenterPanel();
+            FrameInit(shoppingCenterPanel.SCPInit(), "Westminster Shopping Center");
             System.out.println("Sign In");
             System.out.println(userTF.getText());
             System.out.println(passwordF.getText());

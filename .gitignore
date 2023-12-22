@@ -28,4 +28,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-/src/test.java
+/src/com/ManagerSide/test.java

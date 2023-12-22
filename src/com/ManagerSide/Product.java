@@ -1,3 +1,5 @@
+package com.ManagerSide;
+
 import java.util.Date;
  abstract class Product {
     private String prodID;

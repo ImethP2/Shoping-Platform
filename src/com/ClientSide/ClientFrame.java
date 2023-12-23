@@ -10,7 +10,7 @@ public class ClientFrame {
     void FrameInit(JPanel panel, String title){
         this.frame = new JFrame();
         this.frame.setTitle(title);
-        this.frame.setSize(500,500);
+        this.frame.setSize(700,500);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
         this.frame.add(panel);

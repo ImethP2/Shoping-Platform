@@ -440,6 +440,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public void managerMenu() throws ParseException, IOException {
+        TextFileDBHandler.countProduct();
         System.out.println("""
 
                 Please select an option:

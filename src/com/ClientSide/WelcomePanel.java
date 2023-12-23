@@ -38,6 +38,7 @@ public class WelcomePanel extends ClientFrame{
             SignInPanel signInPanel = new SignInPanel();
             FrameInit(signInPanel.SIPInit(), signInPanel.title);
 
+
         });
         signinBtn.setBounds(140,250,90,50);
         panelbtn.add(signinBtn);

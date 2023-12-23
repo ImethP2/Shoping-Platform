@@ -66,9 +66,9 @@ public class SchppingCenterPanel {
 
 
                 String selectedCategory = (String) categoryBox.getSelectedItem();
-                System.out.println(selectedCategory);
+                
                 if (selectedCategory.equals("All")) {
-                    System.out.println("All products selected");
+
                     SCPMain1_2.removeAll();
                     SCPMain1_2.revalidate();
                     SCPMain1_2.repaint();
@@ -105,7 +105,7 @@ public class SchppingCenterPanel {
                     }
 
                 } else if (selectedCategory.equals("Clothing")) {
-                    System.out.println("Clothing selected");
+
                     SCPMain1_2.removeAll();
                     SCPMain1_2.revalidate();
                     SCPMain1_2.repaint();
@@ -122,7 +122,7 @@ public class SchppingCenterPanel {
                                     SCPMain2.removeAll();
                                     SCPMain2.revalidate();
                                     SCPMain2.repaint();
-                                    System.out.println(table.getValueAt(row, 0));
+
                                     SCPMain2Init("Clothing", prodID, SCPMain2);
                                 } catch (IOException ex) {
                                     throw new RuntimeException(ex);
@@ -134,7 +134,7 @@ public class SchppingCenterPanel {
                         throw new RuntimeException(ex);
                     }
                 } else if (selectedCategory.equals("Electronics")) {
-                    System.out.println("Electronics selected");
+
                     SCPMain1_2.removeAll();
                     SCPMain1_2.revalidate();
                     SCPMain1_2.repaint();
@@ -150,7 +150,7 @@ public class SchppingCenterPanel {
                                     SCPMain2.removeAll();
                                     SCPMain2.revalidate();
                                     SCPMain2.repaint();
-                                    System.out.println(table.getValueAt(row, 0));
+
                                     SCPMain2Init("Electronics", prodID,  SCPMain2);
                                 } catch (IOException ex) {
                                     System.err.println(ex);
@@ -267,7 +267,7 @@ public class SchppingCenterPanel {
                 //TODO: Add to cart
             }
         });
-        System.out.println(type);
+
         File file = new File("productList.txt");
         if (type.equals("Clothing")) {
 
@@ -299,7 +299,7 @@ public class SchppingCenterPanel {
                             SCPMain2.add(SCPMain2_1);
                             SCPMain2.add(SCPMain2_2);
                             SCPMain2.setLayout(new BoxLayout(SCPMain2, BoxLayout.Y_AXIS));
-                            System.out.println("dfghjk");
+
                             return SCPMain2;
 
                         }
@@ -315,15 +315,15 @@ public class SchppingCenterPanel {
             if (file.exists()) {
                 try {
                     BufferedReader prodLineReader = new BufferedReader(new FileReader(file));
-                    System.out.println("fuck you");
+
 
                     for (int i = 0; i < TextFileDBHandler.countProduct(); i++) {
-                        System.out.println("suck it");
+
                         String prodLine = prodLineReader.readLine();
                         String[] productArray = prodLine.split("-");
                         String prodID = productArray[0];
                         if (prodID.equals(ProdID)) {
-                            System.out.println("bitch plz");
+
                             JLabel ProdId = new JLabel("Product ID: " + prodID);
                             JLabel ProdCategory = new JLabel("Product Category: " + type);
                             JLabel ProdName = new JLabel("Product Name: " + productArray[1]);
@@ -344,7 +344,6 @@ public class SchppingCenterPanel {
                             SCPMain2.add(SCPMain2_1);
                             SCPMain2.add(SCPMain2_2);
                             SCPMain2.setLayout(new BoxLayout(SCPMain2, BoxLayout.Y_AXIS));
-                            System.out.println("Electronics fuck");
 
                             return SCPMain2;
 
@@ -352,7 +351,6 @@ public class SchppingCenterPanel {
                     }
                     prodLineReader.close();
                 } catch (IOException e) {
-                    System.out.println("Error");
                     e.printStackTrace();
                 }
             }

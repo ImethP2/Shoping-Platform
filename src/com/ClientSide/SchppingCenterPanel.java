@@ -66,7 +66,7 @@ public class SchppingCenterPanel {
 
 
                 String selectedCategory = (String) categoryBox.getSelectedItem();
-                
+
                 if (selectedCategory.equals("All")) {
 
                     SCPMain1_2.removeAll();

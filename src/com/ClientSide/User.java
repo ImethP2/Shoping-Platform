@@ -1,4 +1,4 @@
-package com.ManagerSide;
+package com.ClientSide;
 
 public class User {
     private String userName;
@@ -7,6 +7,7 @@ public class User {
     private String lastName;
     private String email;
     private String phoneNum;
+    private boolean newUser;
 
     public User(String userName, String password, String firstName, String lastName, String email, String phoneNum) {
         this.userName = userName;

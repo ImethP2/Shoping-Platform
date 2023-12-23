@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class WestminsterShoppingManager implements ShoppingManager {
     public static int electCount = 0;
     public static int clothCount = 0;
+    public static int UserCount = 0;
     public static int productCount = electCount + clothCount;
     public static Product[] products = new Product[50];
 

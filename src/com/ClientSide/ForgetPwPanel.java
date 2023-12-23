@@ -1,5 +1,10 @@
 package com.ClientSide;
 
-public class ForgetPwPanel {
+import javax.swing.*;
 
+public class ForgetPwPanel extends ClientFrame{
+
+    JPanel FPInit() {
+        return null;
+    }
 }

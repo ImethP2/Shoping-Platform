@@ -28,8 +28,6 @@ public class SignUpPanel extends ClientFrame {
         JPanel WelcomePanel = new JPanel();
 
         JPanel QuizPanel = new JPanel();
-        QuizPanel.setLayout(new BoxLayout(QuizPanel, BoxLayout.Y_AXIS));
-        QuizPanel.setPreferredSize(new Dimension(300, 500));
 
         JPanel Quiz1 = new JPanel();
         JPanel Quiz2 = new JPanel();
@@ -53,6 +51,8 @@ public class SignUpPanel extends ClientFrame {
         JPanel Quiz6PF = new JPanel();
 
         JPanel BtnPanel = new JPanel();
+        JPanel BtnSignUpPanel = new JPanel();
+        JPanel BtnSignInPanel = new JPanel();
 
         JLabel WelcomeLabel = new JLabel("Welcome to Westminster Shopping Manager");
         WelcomePanel.add(WelcomeLabel);
@@ -72,7 +72,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz1.add(Quiz1L);
         Quiz1.add(Quiz1TF);
         Quiz1.setPreferredSize(new Dimension(400, 40));
-        Quiz1.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz1.setLayout(new GridLayout(1, 2));
 
         JLabel Q2Label = new JLabel("Last Name");
         Quiz2L.add(Q2Label);
@@ -86,7 +86,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz2.add(Quiz2L);
         Quiz2.add(Quiz2TF);
         Quiz2.setPreferredSize(new Dimension(400, 40));
-        Quiz2.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz2.setLayout(new GridLayout(1, 2));
 
         JLabel Q3Label = new JLabel("Email");
         Quiz3L.add(Q3Label);
@@ -100,7 +100,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz3.add(Quiz3L);
         Quiz3.add(Quiz3TF);
         Quiz3.setPreferredSize(new Dimension(400, 40));
-        Quiz3.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz3.setLayout(new GridLayout(1, 2));
 
         JLabel Q4Label = new JLabel("User Name");
         Quiz4L.add(Q4Label);
@@ -114,7 +114,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz4.add(Quiz4L);
         Quiz4.add(Quiz4TF);
         Quiz4.setPreferredSize(new Dimension(400, 40));
-        Quiz4.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz4.setLayout(new GridLayout(1, 2));
 
         JLabel Q5Label = new JLabel("Password");
         Quiz5L.add(Q5Label);
@@ -128,7 +128,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz5.add(Quiz5L);
         Quiz5.add(Quiz5PF);
         Quiz5.setPreferredSize(new Dimension(400, 40));
-        Quiz5.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz5.setLayout(new GridLayout(1, 2));
 
         JLabel Q6Label = new JLabel("Re-Enter Password");
         Quiz6L.add(Q6Label);
@@ -142,7 +142,7 @@ public class SignUpPanel extends ClientFrame {
         Quiz6.add(Quiz6L);
         Quiz6.add(Quiz6PF);
         Quiz6.setPreferredSize(new Dimension(400, 40));
-        Quiz6.setLayout(new FlowLayout(FlowLayout.LEFT));
+        Quiz6.setLayout(new GridLayout(1, 2));
 
         QuizPanel.add(Quiz1);
         QuizPanel.add(Quiz2);
@@ -169,9 +169,23 @@ public class SignUpPanel extends ClientFrame {
                 ex.printStackTrace();
             }
         });
-        BtnPanel.add(QuizBtn);
+        JButton SignInBtn = new JButton("Sign In");
+        SignInBtn.addActionListener(e -> {
+            SignInPanel signInPanel = new SignInPanel();
+            FrameInit(signInPanel.SIPInit(), "Westminster Shopping Center - Sign In");
+        });
+        BtnSignUpPanel.add(QuizBtn);
+        BtnSignUpPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        BtnSignUpPanel.setPreferredSize(new Dimension(150, 40));
+
+        BtnSignInPanel.add(SignInBtn);
+        BtnSignInPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        BtnSignInPanel.setPreferredSize(new Dimension(150, 40));
+
+        BtnPanel.add(BtnSignInPanel);
+        BtnPanel.add(BtnSignUpPanel);
         BtnPanel.setPreferredSize(new Dimension(400, 40));
-        BtnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        BtnPanel.setLayout(new GridLayout(1, 2));
 
         SignUpPanel.add(WelcomePanel);
         SignUpPanel.add(QuizPanel);

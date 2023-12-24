@@ -99,7 +99,7 @@ public class SignInPanel extends ClientFrame{
                 String[] user = UserLineReader.readLine().split("∆");
 
                 if (username.equals(user[0]) && password.equals(user[1])) {
-                    SchppingCenterPanel shoppingCenterPanel = new SchppingCenterPanel();
+                    ShoppingCenterPanel shoppingCenterPanel = new ShoppingCenterPanel();
                     FrameInit(shoppingCenterPanel.SCPInit(), "Westminster Shopping Center");
                 } else {
 

@@ -2,6 +2,7 @@ package com.ClientSide;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class WelcomePanel extends ClientFrame{
     public WelcomePanel(){
@@ -45,6 +46,14 @@ public class WelcomePanel extends ClientFrame{
 
         JButton signupBtn = new JButton("Sign-UP");
         signupBtn.setBounds(270,250,90,50);
+        signupBtn.addActionListener(e -> {
+            SignUpPanel signUpPanel = new SignUpPanel();
+            try {
+                FrameInit(signUpPanel.SUPInit(), "Westminster Shopping Center - Sign Up");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         panelbtn.add(signupBtn);
 
         panelFull.add(panelbtn);

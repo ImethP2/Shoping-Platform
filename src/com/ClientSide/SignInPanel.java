@@ -38,9 +38,9 @@ public class SignInPanel extends ClientFrame{
         JPanel ForgotPassPanel = new JPanel();
         JButton ForgotPassBtn = new JButton("Forgot Password");
         ForgotPassBtn.addActionListener(e -> {
-            ForgetPwPanel forgotPwPanel = new ForgetPwPanel();
-            FrameInit(forgotPwPanel.FPInit(), "Forgot Password");
-
+            //TODO : Forgot Password
+            ForgetPwPanel rePwPanel = new ForgetPwPanel();
+            FrameInit(rePwPanel.FPInit(), "Westminster Shopping Center - Reset Password");
         });
         ForgotPassPanel.add(ForgotPassBtn);
         ForgotPassPanel.setVisible(false);

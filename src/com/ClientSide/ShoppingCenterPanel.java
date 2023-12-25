@@ -186,7 +186,11 @@ public class ShoppingCenterPanel {
                 data[i][1] = productArray[1];
                 data[i][2] = productArray[2];
                 data[i][3] = productArray[3];
-                data[i][4] = productArray[4]+" , "+productArray[5]+" Weeks";
+                if (productArray[0].contains("EL")) {
+                    data[i][4] = productArray[4] + " , " + productArray[5] + " Weeks";
+                }else if (productArray[0].contains("CL")){
+                    data[i][4] = productArray[4] + " , " + productArray[5];
+                }
 
             }prodLineReader.close();
             table = new JTable(data, columnNames){

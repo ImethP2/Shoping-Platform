@@ -24,6 +24,9 @@ public class TextFileDBHandler {
      * @see Electronics
      */
     public static void saveProductList() throws IOException {
+        deleteFile();
+        createFile();
+        sorting();
         File file = new File("productList.txt");
         if (file.exists()) {
             for (Product product : WestminsterShoppingManager.products) {
@@ -35,7 +38,6 @@ public class TextFileDBHandler {
             }
         }else{
             createFile();
-            saveProductList();
         }
     }
     public static void loadProductList() throws IOException {
@@ -75,16 +77,10 @@ public class TextFileDBHandler {
                     }
 
                 }
-/*                for (Product product: WestminsterShoppingManager.products){
-                    if (product instanceof Clothing){
-                        WestminsterShoppingManager.clothCount++;
-                    }else if (product instanceof Electronics){
-                        WestminsterShoppingManager.electCount++;
-                    }
-                }*/
-                System.out.println(WestminsterShoppingManager.clothCount);
+
+                /*System.out.println(WestminsterShoppingManager.clothCount);
                 System.out.println(WestminsterShoppingManager.electCount);
-                System.out.println(WestminsterShoppingManager.productCount);
+                System.out.println(WestminsterShoppingManager.productCount);*/
                 prodLineReader.close();
 
             } catch (FileNotFoundException e) {
@@ -296,7 +292,6 @@ public class TextFileDBHandler {
         return listFull;
     }
     public static void sorting(){
-        Product[] tempArray = new Product[WestminsterShoppingManager.productCount];
         int n = WestminsterShoppingManager.productCount;
         boolean swapped;
 
@@ -317,6 +312,12 @@ public class TextFileDBHandler {
                 break;
             }
         }
+/*
+        for (int i = 0; i < n; i++) {
+            System.out.println(n);
+            System.out.println(WestminsterShoppingManager.products[i].getProdID());
+        }
+*/
 
 
     }

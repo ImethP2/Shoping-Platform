@@ -2,8 +2,6 @@ package com.ClientSide;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -249,7 +247,7 @@ public class SignUpPanel extends ClientFrame {
 
 
     }
-    private void UserLoader() throws IOException {
+    public static void UserLoader() throws IOException {
         File file = new File("UserList.txt");
         if (file.exists()) {
             try {
@@ -274,7 +272,7 @@ public class SignUpPanel extends ClientFrame {
             file.createNewFile();
         }
     }
-    private boolean checkUserIdExist(String userName) throws IOException {
+    public static boolean checkUserIdExist(String userName) throws IOException {
 
         boolean UserNameExist = false;
         User.UserArrayList();

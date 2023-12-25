@@ -50,9 +50,11 @@ public class WelcomePanel extends ClientFrame{
             SignUpPanel signUpPanel = new SignUpPanel();
             try {
                 FrameInit(signUpPanel.SUPInit(), "Westminster Shopping Center - Sign Up");
+
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+
         });
         panelbtn.add(signupBtn);
 

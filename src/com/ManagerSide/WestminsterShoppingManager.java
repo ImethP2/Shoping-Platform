@@ -350,6 +350,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
         // TODO implement here
     }
 
+    @Override
+    public void saveProductList() {
+
+    }
+
     //TODO: find why does this not print the first line (0EL)
     //it only prints the last line
     //fix print***
@@ -370,9 +375,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 */
 
-    public void saveProductList() {
-
-    }
 
     public void loadProductList() throws IOException {
         // TODO implement here

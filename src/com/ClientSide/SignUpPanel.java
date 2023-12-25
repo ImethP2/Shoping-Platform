@@ -21,7 +21,7 @@ public class SignUpPanel extends ClientFrame {
         panelFull.setPreferredSize(new Dimension(700,500));
 
         return panelFull;
-    };
+    }
     private JPanel QuizPanel() throws IOException {
         UserLoader();
         JPanel SignUpPanel = new JPanel();

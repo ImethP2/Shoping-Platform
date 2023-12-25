@@ -295,4 +295,29 @@ public class TextFileDBHandler {
         }
         return listFull;
     }
+    public static void sorting(){
+        Product[] tempArray = new Product[WestminsterShoppingManager.productCount];
+        int n = WestminsterShoppingManager.productCount;
+        boolean swapped;
+
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (WestminsterShoppingManager.products[j].compare(WestminsterShoppingManager.products[j + 1])) {
+                    Product temp = WestminsterShoppingManager.products[j];
+                    WestminsterShoppingManager.products[j] = WestminsterShoppingManager.products[j + 1];
+                    WestminsterShoppingManager.products[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+
+
+            // If no two elements were swapped in the inner loop, the array is already sorted
+            if (!swapped) {
+                break;
+            }
+        }
+
+
+    }
 }

@@ -1,7 +1,6 @@
 package com.ManagerSide;
 
-import java.util.Date;
- abstract class Product {
+abstract class Product {
     private String prodID;
     private String prodName;
     private int prodQuantity;
@@ -50,4 +49,35 @@ import java.util.Date;
     }
 
      abstract void save();
+    public boolean compare(Product p){
+        String thisID = this.getProdID();
+        String nextID = p.getProdID();
+//        System.out.println(thisID+" , "+nextID);
+
+        String[] thisIDArray = thisID.split("@");
+        String[] nextIDArray = nextID.split("@");
+        int thisIDInt = Integer.parseInt(thisIDArray[0]);
+        int nextIDInt = Integer.parseInt(nextIDArray[0]);
+
+        Boolean result = true;
+
+        if (thisID.contains("CL")&&nextID.contains("EL")){
+            result = false;
+        } else if (thisID.contains("EL")&&nextID.contains("CL")){
+            result = true;
+        } else if (thisID.contains("EL")&&nextID.contains("EL")){
+            if (thisIDInt>nextIDInt){
+                result = true;
+            }else if (thisIDInt<nextIDInt){
+                result = false;
+            }
+        } else if (thisID.contains("CL")&&nextID.contains("CL")){
+            if (thisIDInt>nextIDInt){
+                result = true;
+            }else if (thisIDInt<nextIDInt){
+                result = false;
+            }
+        }
+        return result;
+    }
  }

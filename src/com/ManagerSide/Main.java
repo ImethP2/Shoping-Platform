@@ -1,5 +1,7 @@
 package com.ManagerSide;
 
+import com.ClientSide.User;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Scanner;
@@ -21,6 +23,9 @@ public class Main {
         String load = input.nextLine().toUpperCase();
         if (load.equalsIgnoreCase("Y")){
             TextFileDBHandler.loadProductList();
+            TextFileDBHandler.countProduct();
+            TextFileDBHandler.sorting();
+            User.UserArrayList();
             do{
                 shoppingManager.managerMenu();
             }while (true);

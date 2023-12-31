@@ -170,6 +170,8 @@ public class ForgetPwPanel extends ClientFrame{
                             JOptionPane.showMessageDialog(null, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                             try {
                                 saveUser(user);
+                                SignInPanel signInPanel = new SignInPanel();
+                                FrameInit(signInPanel.SIPInit(), signInPanel.title);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

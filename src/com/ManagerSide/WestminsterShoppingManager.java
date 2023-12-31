@@ -1,5 +1,9 @@
 package com.ManagerSide;
 
+import com.ClientSide.User;
+import com.ClientSide.*;
+
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -441,10 +445,17 @@ public class WestminsterShoppingManager implements ShoppingManager {
             }
         }
     }
+    private void OpenGUI(){
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                WelcomePanel clientFrame = new WelcomePanel();
+            }
+        });
+    }
 
     public void managerMenu() throws ParseException, IOException {
-        TextFileDBHandler.countProduct();
-        TextFileDBHandler.sorting();
+
         System.out.println("""
 
                 Please select an option:
@@ -452,9 +463,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 2. Update a product
                 3. Delete a product
                 4. Print the product list
-                5. Save the product list
-                6. Load the product list
-                7. Exit""");
+                5. Open the GUI
+                0. Exit""");
         Scanner input = new Scanner(System.in);
         Scanner inputINT = new Scanner(System.in);
         int option = inputINT.nextInt();
@@ -474,16 +484,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 printProductList();
             }
             case 5 -> {
-                TextFileDBHandler.saveProductList();
+                OpenGUI();
             }
-            case 6 -> {
-                if (products.length == TextFileDBHandler.countProduct()){
-                    System.err.println("DataBase is already loaded to the software");
-                }else {
-                    TextFileDBHandler.loadProductList();
-                }
-            }
-            case 7 -> {
+
+            case 0 -> {
                 System.exit(0);
             }
             default -> throw new IllegalStateException("Unexpected value: " + option);

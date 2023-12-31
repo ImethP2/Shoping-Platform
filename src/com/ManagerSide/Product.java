@@ -1,6 +1,6 @@
 package com.ManagerSide;
 
-abstract class Product {
+public abstract class Product {
     private String prodID;
     private String prodName;
     private int prodQuantity;
@@ -48,7 +48,7 @@ abstract class Product {
         this.prodPrice = prodPrice;
     }
 
-     abstract void save();
+    public abstract void save();
     public boolean compare(Product p){
         String thisID = this.getProdID();
         String nextID = p.getProdID();

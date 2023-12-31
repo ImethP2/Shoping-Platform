@@ -100,7 +100,7 @@ public class SignInPanel extends ClientFrame{
 
                 if (username.equals(user[0]) && password.equals(user[1])) {
                     ShoppingCenterPanel shoppingCenterPanel = new ShoppingCenterPanel();
-                    FrameInit(shoppingCenterPanel.SCPInit(), "Westminster Shopping Center");
+                    FrameInit(shoppingCenterPanel.SCPInit(user), "Westminster Shopping Center");
                 } else {
 
                     ForgotPassPanel.setVisible(true);

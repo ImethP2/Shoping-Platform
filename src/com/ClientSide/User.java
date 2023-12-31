@@ -88,7 +88,7 @@ public class User {
         }
 
     }
-    static void UserArrayList() throws IOException{
+    public static void UserArrayList() throws IOException{
         File file = new File("UserList.txt");
         if (file.exists()) {
             try {
@@ -112,6 +112,29 @@ public class User {
         }else{
             file.createNewFile();
         }
+    }
+     static void updateUser(User user) throws IOException {
+        File file = new File("UserList.txt");
+        File tempFile = new File("TempUserList.txt");
+        tempFile.createNewFile();
+        FileWriter writer = new FileWriter(tempFile, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] userArray = line.split("∆");
+            if (userArray[0].equals(user.getUserName())) {
+                bufferedWriter.write(user.getUserName() + "∆" + user.getPassword() + "∆" + user.getFirstName() + "∆" + user.getLastName() + "∆" + user.getEmail() + "∆" + user.isNewUser());
+                bufferedWriter.newLine();
+            } else {
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
+        }
+        bufferedWriter.close();
+        writer.close();
+        file.delete();
+        tempFile.renameTo(file);
     }
 
 }

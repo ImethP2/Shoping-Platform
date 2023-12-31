@@ -36,6 +36,7 @@ public class WelcomePanel extends ClientFrame{
 
         JButton signinBtn = new JButton("Sign-IN");
         signinBtn.addActionListener(e -> {
+            Dispose();
             SignInPanel signInPanel = new SignInPanel();
             FrameInit(signInPanel.SIPInit(), signInPanel.title);
 
@@ -49,6 +50,7 @@ public class WelcomePanel extends ClientFrame{
         signupBtn.addActionListener(e -> {
             SignUpPanel signUpPanel = new SignUpPanel();
             try {
+                Dispose();
                 FrameInit(signUpPanel.SUPInit(), "Westminster Shopping Center - Sign Up");
 
             } catch (IOException ex) {

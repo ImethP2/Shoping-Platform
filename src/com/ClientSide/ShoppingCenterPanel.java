@@ -4,10 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import com.ManagerSide.*;
-public class ShoppingCenterPanel {
-    public JPanel SCPInit(){
+public class ShoppingCenterPanel extends ClientFrame {
+    public static ArrayList<String> CartList = new ArrayList<>();
+    public JPanel SCPInit(String[] user) throws RuntimeException, IOException {
+
 
 
         JPanel SCPAll = new JPanel();
@@ -19,14 +26,14 @@ public class ShoppingCenterPanel {
 
 
 
-        SCPAll.add(SCPMain1Init(SCPMain1_0, SCPMain1_1,SCPMain1_2,SCPMain1, SCPMain2));
+        SCPAll.add(SCPMain1Init(SCPMain1_0, SCPMain1_1,SCPMain1_2,SCPMain1, SCPMain2, user));
         SCPAll.add(SCPMain2);
         SCPAll.setLayout(new BoxLayout(SCPAll, BoxLayout.Y_AXIS));
         SCPAll.setPreferredSize(new Dimension(600, 500));
 
         return SCPAll;
     }
-    private JPanel SCPMain1Init(JPanel SCPMain1_0, JPanel SCPMain1_1,JPanel SCPMain1_2, JPanel SCPMain1, JPanel SCPMain2) throws RuntimeException {
+    private JPanel SCPMain1Init(JPanel SCPMain1_0, JPanel SCPMain1_1,JPanel SCPMain1_2, JPanel SCPMain1, JPanel SCPMain2, String[] user) throws RuntimeException {
         JLabel label1 = new JLabel("Select Product Category");
         String[] category = {"All", "Clothing", "Electronics"};
         JComboBox<String> categoryBox = new JComboBox<>(category);
@@ -35,8 +42,15 @@ public class ShoppingCenterPanel {
         ShoppingCartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Shopping Cart");
+                ShoppingCart shoppingCart = new ShoppingCart();
+                try {
+                    Dispose();
+                    FrameInit(shoppingCart.SCInit(CartList, user), "Shopping Cart");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
+
         });
 
 
@@ -82,7 +96,7 @@ public class ShoppingCenterPanel {
                                     int row = table.getSelectedRow();
                                     String prodID = table.getValueAt(row, 0).toString();
 
-                                    System.out.println(table.getValueAt(row, 0));
+                                    //System.out.println(table.getValueAt(row, 0));
                                     if (prodID.contains("CL")) {
                                         SCPMain2.removeAll();
                                         SCPMain2.revalidate();
@@ -203,22 +217,22 @@ public class ShoppingCenterPanel {
             return table;
 
         } else if (type.equals("Clothing")) {
-            String[][] data = new String[WestminsterShoppingManager.clothCount][5];
+                String[][] data = new String[WestminsterShoppingManager.clothCount][5];
 
 
-            for (int i = 0; i < TextFileDBHandler.countProduct(); i++) {
-                String prodLine = prodLineReader.readLine();
-                String[] productArray = prodLine.split("-");
-                if (productArray[0].contains("CL")) {
-                    data[row][0] = productArray[0];
-                    data[row][1] = productArray[1];
-                    data[row][2] = productArray[2];
-                    data[row][3] = productArray[3];
-                    data[row][4] = productArray[4] + " , " + productArray[5];
-                    row++;
+                for (int i = 0; i < TextFileDBHandler.countProduct(); i++) {
+                    String prodLine = prodLineReader.readLine();
+                    String[] productArray = prodLine.split("-");
+                    if (productArray[0].contains("CL")) {
+                        data[row][0] = productArray[0];
+                        data[row][1] = productArray[1];
+                        data[row][2] = productArray[2];
+                        data[row][3] = productArray[3];
+                        data[row][4] = productArray[4] + " , " + productArray[5];
+                        row++;
 
-                }
-            }prodLineReader.close();
+                    }
+                }prodLineReader.close();
             table = new JTable(data, columnNames){
                 public boolean isCellEditable(int row, int column){
                     return false;
@@ -256,6 +270,7 @@ public class ShoppingCenterPanel {
         return table;
     }
     private JPanel SCPMain2Init(String type, String ProdID, JPanel SCPMain2) throws IOException {
+
         JPanel SCPMain2_1 = new JPanel();
         JPanel SCPMain2_2 = new JPanel();
 
@@ -263,13 +278,7 @@ public class ShoppingCenterPanel {
         SCPMain2_2.add(addToCartBtn);
         SCPMain2_2.setPreferredSize(new Dimension(500, 50));
         SCPMain2_2.setLayout(new FlowLayout(FlowLayout.CENTER));
-        addToCartBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Add to cart");
-                //TODO: Add to cart
-            }
-        });
+
 
         File file = new File("productList.txt");
         if (type.equals("Clothing")) {
@@ -302,6 +311,37 @@ public class ShoppingCenterPanel {
                             SCPMain2.add(SCPMain2_1);
                             SCPMain2.add(SCPMain2_2);
                             SCPMain2.setLayout(new BoxLayout(SCPMain2, BoxLayout.Y_AXIS));
+
+                            SpinnerNumberModel getQuantiy = new SpinnerNumberModel(1, 1, Integer.parseInt(productArray[2]), 1);
+                            JSpinner quant = new JSpinner(getQuantiy);
+
+                            addToCartBtn.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    //System.out.println("Add to cart");
+                                    //TODO: Add to cart
+
+                                    //JOptionPane.showMessageDialog(SCPMain2, quant);
+                                    int quantiy = JOptionPane.showOptionDialog(SCPMain2, quant, "How much do you need?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                                    if (quantiy == JOptionPane.OK_OPTION) {
+                                        String[] prod = new String[6];
+                                        prod[0] = productArray[0];
+                                        prod[1] = productArray[1];
+                                        prod[2] = String.valueOf(quant.getValue());
+                                        prod[3] = productArray[4];
+                                        prod[4] = productArray[5];
+                                        prod[5] = productArray[3];
+                                        String item = (prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]+ "-" + prod[5]);
+                                        CartList.add(item);
+
+                                    } else if (quantiy == JOptionPane.CANCEL_OPTION) {
+
+                                    }
+                                }
+                            });
+                            /*for (String[] prod : CartList) {
+                                System.out.println(prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]+ "-" + prod[5]);
+                            }*/
 
                             return SCPMain2;
 
@@ -348,17 +388,63 @@ public class ShoppingCenterPanel {
                             SCPMain2.add(SCPMain2_2);
                             SCPMain2.setLayout(new BoxLayout(SCPMain2, BoxLayout.Y_AXIS));
 
+                            SpinnerNumberModel getQuantiy = new SpinnerNumberModel(1, 1, Integer.parseInt(productArray[2]), 1);
+                            JSpinner quant = new JSpinner(getQuantiy);
+
+
+
+                            addToCartBtn.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                   // System.out.println("Add to cart");
+                                    //TODO: Add to cart
+
+//                                    JOptionPane.showMessageDialog(SCPMain2, quant);
+                                    int quantiy = JOptionPane.showOptionDialog(SCPMain2, quant, "How much do you need?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                                    if (quantiy == JOptionPane.OK_OPTION) {
+                                        String[] prod = new String[6];
+                                        prod[0] = productArray[0];
+                                        prod[1] = productArray[1];
+                                        prod[2] = String.valueOf(quant.getValue());
+                                        prod[3] = productArray[4];
+                                        prod[4] = productArray[5] + " Weeks";
+                                        prod[5] = productArray[3];
+                                        String item = (prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]+ "-" + prod[5]);
+                                        CartList.add(item);
+
+                                    } else if (quantiy == JOptionPane.CANCEL_OPTION) {
+
+                                    }
+                                }
+                            });
+                            /*System.err.println("----");
+                            for (String[] prod : CartList) {
+//                                System.err.println("----");
+                                System.out.println(prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]+ "-" + prod[5]);
+                            }
+                            System.err.println("----");*/
                             return SCPMain2;
 
                         }
+
                     }
                     prodLineReader.close();
+                    /*for (String[] prod : CartList) {
+                        System.out.println(prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]);
+                    }
+                    System.out.println(CartList.size());*/
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
+        /*System.err.println("----");
+        for (String[] prod : CartList) {
+//                                System.err.println("----");
+            System.out.println(prod[0] + "-" + prod[1] + "-" + prod[2] + "-" + prod[3] + "-" + prod[4]+ "-" + prod[5]);
+        }
+        System.err.println("----");*/
         return SCPMain2;
     }
 

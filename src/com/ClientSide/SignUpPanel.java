@@ -151,7 +151,7 @@ public class SignUpPanel extends ClientFrame {
         QuizPanel.setLayout(new BoxLayout(QuizPanel, BoxLayout.Y_AXIS));
         QuizPanel.setPreferredSize(new Dimension(400, 250));
 
-        JButton QuizBtn = new JButton("Sign Up");
+        JButton QuizBtn = new JButton("Register");
         QuizBtn.addActionListener(e -> {
             try {
                 String firstName = Q1TF.getText();
@@ -212,9 +212,9 @@ public class SignUpPanel extends ClientFrame {
                             } else {
                                 if (password.equals(rePassword)) {
                                     User.UserCreation(userName, password, firstName, lastName, email, true);
-                                    ShoppingCenterPanel shoppingCenterPanel = new ShoppingCenterPanel();
-                                    System.out.println(userArrayList.size());
-                                    FrameInit(shoppingCenterPanel.SCPInit(), "Westminster Shopping Center");
+                                    SignInPanel signInPanel = new SignInPanel();
+                                    FrameInit(signInPanel.SIPInit(), signInPanel.title);
+
                                 } else {
                                     JOptionPane.showMessageDialog(QuizPanel, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
@@ -227,9 +227,8 @@ public class SignUpPanel extends ClientFrame {
                         } else {
                             if (password.equals(rePassword)) {
                                 User.UserCreation(userName, password, firstName, lastName, email, true);
-                                ShoppingCenterPanel shoppingCenterPanel = new ShoppingCenterPanel();
-                                System.out.println(userArrayList.size());
-                                FrameInit(shoppingCenterPanel.SCPInit(), "Westminster Shopping Center");
+                                SignInPanel signInPanel = new SignInPanel();
+                                FrameInit(signInPanel.SIPInit(), signInPanel.title);
                             } else {
                                 JOptionPane.showMessageDialog(QuizPanel, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
                             }

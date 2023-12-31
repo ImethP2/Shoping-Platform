@@ -44,7 +44,7 @@ public class Electronics extends Product{
     }
 
     @Override
-    void save() {
+    public void save() {
         try {
             FileWriter writer = new FileWriter("productList.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);

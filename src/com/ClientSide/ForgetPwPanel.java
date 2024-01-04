@@ -106,7 +106,7 @@ public class ForgetPwPanel extends ClientFrame{
             String Email = EmailTF.getText();
             String Password = PWPF.getText();
             String RePassword = RePWPF.getText();
-            System.out.println(UserName + " ∆ " + Email + " ∆ " + Password + " ∆ " + RePassword);
+
             try {
 
                 forgetPassword(UserName, Email, Password, RePassword, SpPanel);
@@ -123,9 +123,9 @@ public class ForgetPwPanel extends ClientFrame{
             //TODO : Sign In
 
             try {
+                this.Dispose();
                 SignUpPanel signUpPanel = new SignUpPanel();
                 signUpPanel.SUPInit();
-                panelFull.setVisible(false);
             } catch (Exception ex) {
 
                 throw new RuntimeException(ex);
@@ -184,13 +184,10 @@ public class ForgetPwPanel extends ClientFrame{
                     }
                 }
             }
-
-
         } else {
             JOptionPane.showMessageDialog(null, "User Name does not exist", "Error", JOptionPane.ERROR_MESSAGE);
             SignUp.setVisible(true);
         }
-
     }
 
     private void saveUser(User user) throws IOException {

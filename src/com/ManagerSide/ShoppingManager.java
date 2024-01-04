@@ -9,7 +9,5 @@ public interface ShoppingManager {
     public abstract void deleteProduct();
     public abstract void printProductList();
     public abstract void sortProductList();
-    public abstract void saveProductList();
-    public abstract void loadProductList() throws IOException;
     public abstract void managerMenu() throws ParseException, IOException;
 }

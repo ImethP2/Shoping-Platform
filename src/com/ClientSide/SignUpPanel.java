@@ -169,6 +169,7 @@ public class SignUpPanel extends ClientFrame {
         });
         JButton SignInBtn = new JButton("Sign In");
         SignInBtn.addActionListener(e -> {
+            Dispose();
             SignInPanel signInPanel = new SignInPanel();
             FrameInit(signInPanel.SIPInit(), "Westminster Shopping Center - Sign In");
         });
@@ -212,6 +213,7 @@ public class SignUpPanel extends ClientFrame {
                             } else {
                                 if (password.equals(rePassword)) {
                                     User.UserCreation(userName, password, firstName, lastName, email, true);
+
                                     SignInPanel signInPanel = new SignInPanel();
                                     FrameInit(signInPanel.SIPInit(), signInPanel.title);
 
@@ -227,6 +229,7 @@ public class SignUpPanel extends ClientFrame {
                         } else {
                             if (password.equals(rePassword)) {
                                 User.UserCreation(userName, password, firstName, lastName, email, true);
+                                Dispose();
                                 SignInPanel signInPanel = new SignInPanel();
                                 FrameInit(signInPanel.SIPInit(), signInPanel.title);
                             } else {

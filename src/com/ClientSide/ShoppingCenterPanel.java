@@ -9,6 +9,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
+
+import static com.ManagerSide.WestminsterShoppingManager.productCount;
+import static com.ManagerSide.WestminsterShoppingManager.products;
 
 import com.ManagerSide.*;
 public class ShoppingCenterPanel extends ClientFrame {
@@ -33,7 +38,8 @@ public class ShoppingCenterPanel extends ClientFrame {
 
         return SCPAll;
     }
-    private JPanel SCPMain1Init(JPanel SCPMain1_0, JPanel SCPMain1_1,JPanel SCPMain1_2, JPanel SCPMain1, JPanel SCPMain2, String[] user) throws RuntimeException {
+
+    private JPanel SCPMain1Init(JPanel SCPMain1_0, JPanel SCPMain1_1,JPanel SCPMain1_2, JPanel SCPMain1, JPanel SCPMain2, String[] User) throws RuntimeException {
         JLabel label1 = new JLabel("Select Product Category");
         String[] category = {"All", "Clothing", "Electronics"};
         JComboBox<String> categoryBox = new JComboBox<>(category);
@@ -42,10 +48,12 @@ public class ShoppingCenterPanel extends ClientFrame {
         ShoppingCartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ShoppingCart shoppingCart = new ShoppingCart();
                 try {
-                    Dispose();
-                    FrameInit(shoppingCart.SCInit(CartList, user), "Shopping Cart");
+//                    Dispose();
+                    ShoppingCart shoppingCart = new ShoppingCart();
+                    FrameInit(shoppingCart.SCInit(CartList, User), "Shopping Cart");
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    ;
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -96,7 +104,7 @@ public class ShoppingCenterPanel extends ClientFrame {
                                     int row = table.getSelectedRow();
                                     String prodID = table.getValueAt(row, 0).toString();
 
-                                    //System.out.println(table.getValueAt(row, 0));
+
                                     if (prodID.contains("CL")) {
                                         SCPMain2.removeAll();
                                         SCPMain2.revalidate();
@@ -179,7 +187,38 @@ public class ShoppingCenterPanel extends ClientFrame {
         });
 
         return SCPMain1_2;
+
     }
+    private Product getProduct(String ProdID) {
+        for (int i = 0; i < productCount; i++) {
+            if (products[i].getProdID().equals(ProdID)) {
+                return products[i];
+            }
+        }
+        return null;
+    }
+ /*   private void updateTable(Jtable table){
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                                                           Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+
+                String id = (String)table.getModel().getValueAt(row, 0);
+                Product product = getProduct(id);
+                if (product.getProdID().equals(id) && product.getProdQuantity()<=3) {
+                    setBackground(Color.RED);
+                    setForeground(Color.WHITE);
+                } else {
+                    setBackground(table.getBackground());
+                    setForeground(table.getForeground());
+                }
+
+                return this;
+            }
+        });
+    }*/
     private JTable SCPTableInit(String type) throws RuntimeException, IOException {
 
         TextFileDBHandler.countProduct();
@@ -198,11 +237,13 @@ public class ShoppingCenterPanel extends ClientFrame {
 
                 data[i][0] = productArray[0];
                 data[i][1] = productArray[1];
-                data[i][2] = productArray[2];
+
                 data[i][3] = productArray[3];
                 if (productArray[0].contains("EL")) {
+                    data[i][2] = "Electronics";
                     data[i][4] = productArray[4] + " , " + productArray[5] + " Weeks";
                 }else if (productArray[0].contains("CL")){
+                    data[i][2] = "Clothing";
                     data[i][4] = productArray[4] + " , " + productArray[5];
                 }
 
@@ -212,9 +253,9 @@ public class ShoppingCenterPanel extends ClientFrame {
                     return false;
                 }
             };
-            table.setGridColor(Color.BLACK);
-            table.getColumnModel().getColumn(4).setPreferredWidth(150);
-            return table;
+//            table.setGridColor(Color.BLACK);
+//            table.getColumnModel().getColumn(4).setPreferredWidth(150);
+
 
         } else if (type.equals("Clothing")) {
                 String[][] data = new String[WestminsterShoppingManager.clothCount][5];
@@ -226,7 +267,7 @@ public class ShoppingCenterPanel extends ClientFrame {
                     if (productArray[0].contains("CL")) {
                         data[row][0] = productArray[0];
                         data[row][1] = productArray[1];
-                        data[row][2] = productArray[2];
+                        data[row][2] = "Clothing";
                         data[row][3] = productArray[3];
                         data[row][4] = productArray[4] + " , " + productArray[5];
                         row++;
@@ -238,8 +279,28 @@ public class ShoppingCenterPanel extends ClientFrame {
                     return false;
                 }
             };
-            table.setGridColor(Color.BLACK);
-            return table;
+//            table.setGridColor(Color.BLACK);
+            /*table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+                @Override
+                public Component getTableCellRendererComponent(JTable table,
+                                                               Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+
+                    String id = (String)table.getModel().getValueAt(row, 0);
+                    Product product = getProduct(id);
+                        if (product.getProdID().equals(id) && product.getProdQuantity()<=3) {
+                            setBackground(Color.RED);
+                            setForeground(Color.WHITE);
+                        } else {
+                            setBackground(table.getBackground());
+                            setForeground(table.getForeground());
+                        }
+
+                    return this;
+                }
+            });
+            */
 
         } else if (type.equals("Electronics")) {
             String[][] data = new String[WestminsterShoppingManager.electCount][5];
@@ -251,7 +312,7 @@ public class ShoppingCenterPanel extends ClientFrame {
                 if (productArray[0].contains("EL")) {
                     data[row][0] = productArray[0];
                     data[row][1] = productArray[1];
-                    data[row][2] = productArray[2];
+                    data[row][2] = "Electronics";
                     data[row][3] = productArray[3];
                     data[row][4] = productArray[4] + " , " + productArray[5] + " Weeks";
                     row++;
@@ -263,10 +324,32 @@ public class ShoppingCenterPanel extends ClientFrame {
                     return false;
                 }
             };
-            table.setGridColor(Color.BLACK);
-            return table;
 
         }
+
+        table.setGridColor(Color.BLACK);
+        table.getColumnModel().getColumn(4).setPreferredWidth(150);
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                                                           Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+
+                String id = (String)table.getModel().getValueAt(row, 0);
+                Product product = getProduct(id);
+                if (product.getProdID().equals(id) && product.getProdQuantity()<=3) {
+                    setBackground(Color.RED);
+                    setForeground(Color.WHITE);
+                } else {
+                    setBackground(table.getBackground());
+                    setForeground(table.getForeground());
+                }
+
+                return this;
+            }
+        });
+
         return table;
     }
     private JPanel SCPMain2Init(String type, String ProdID, JPanel SCPMain2) throws IOException {

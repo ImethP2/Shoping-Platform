@@ -67,20 +67,14 @@ public class TextFileDBHandler {
                     double prodPrice = Double.parseDouble(productArray[3]);
 
                     if (prodID.contains("CL")) {
-                        //WestminsterShoppingManager.clothCount++;
                         clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else if (prodID.contains("EL")) {
-                        //WestminsterShoppingManager.electCount++;
                         electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else {
                         System.err.println("Text File load Error");
                     }
 
                 }
-
-                /*System.out.println(WestminsterShoppingManager.clothCount);
-                System.out.println(WestminsterShoppingManager.electCount);
-                System.out.println(WestminsterShoppingManager.productCount);*/
                 prodLineReader.close();
 
             } catch (FileNotFoundException e) {
@@ -95,7 +89,6 @@ public class TextFileDBHandler {
         String warrantyPeriod = productArray[5];
         Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
         WestminsterShoppingManager.products[productCount] = electronics;
-//        WestminsterShoppingManager.electCount++;electCount
 
     }
     public static void clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
@@ -103,7 +96,6 @@ public class TextFileDBHandler {
         String prodColor = productArray[5];
         Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
         WestminsterShoppingManager.products[productCount] = clothing;
-//        WestminsterShoppingManager.clothCount++;
     }
     public static int countProduct() throws IOException {
         File file = new File("productList.txt");
@@ -214,8 +206,6 @@ public class TextFileDBHandler {
                     String[] productArray = prodLine.split("-");
                     String prodID = productArray[0];
                     if (prodID.equals(ClotheProdID)){
-                        //prodLineWriter.write(clothing.getProdID() + "-" + clothing.getProdName() + "-" + clothing.getProdQuantity() + "-" + clothing.getProdPrice() + "-" + clothing.getSize() + "-" + clothing.getColor());
-                        //prodLineWriter.newLine();
                         clothing.save();
                     }else{
                         prodLineWriter.write(prodLine);
@@ -249,8 +239,6 @@ public class TextFileDBHandler {
                     String[] productArray = prodLine.split("-");
                     String prodID = productArray[0];
                     if (prodID.equals(ElectProdID)){
-                        //prodLineWriter.write(electronics.getProdID() + "-" + electronics.getProdName() + "-" + electronics.getProdQuantity() + "-" + electronics.getProdPrice() + "-" + electronics.getBrandName() + "-" + electronics.getWarrantyDate());
-                        //prodLineWriter.newLine();
                         electronics.save();
                     }else{
                         prodLineWriter.write(prodLine);
@@ -305,20 +293,9 @@ public class TextFileDBHandler {
                     swapped = true;
                 }
             }
-
-
-            // If no two elements were swapped in the inner loop, the array is already sorted
             if (!swapped) {
                 break;
             }
         }
-/*
-        for (int i = 0; i < n; i++) {
-            System.out.println(n);
-            System.out.println(WestminsterShoppingManager.products[i].getProdID());
-        }
-*/
-
-
     }
 }

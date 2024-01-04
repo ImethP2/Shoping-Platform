@@ -22,8 +22,8 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String load = input.nextLine().toUpperCase();
         if (load.equalsIgnoreCase("Y")){
-            TextFileDBHandler.loadProductList();
             TextFileDBHandler.countProduct();
+            TextFileDBHandler.loadProductList();
             TextFileDBHandler.sorting();
             User.UserArrayList();
             do{

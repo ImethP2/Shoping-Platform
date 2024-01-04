@@ -24,7 +24,9 @@ public class SignInPanel extends ClientFrame{
 
 
         JLabel titleLabel = new JLabel("Sign IN");
+//        labelPanel.setLayout(new BoxLayout(labelPanel,BoxLayout.Y_AXIS));
         labelPanel.add(titleLabel);
+        labelPanel.setMaximumSize(new Dimension(250,50));
 
         JLabel userLabel = new JLabel("Username");
         JLabel passLabel = new JLabel("Password");
@@ -52,7 +54,7 @@ public class SignInPanel extends ClientFrame{
             try {
                 String UserName = userTF.getText();
                 String Password = passwordF.getText();
-                signIn(UserName, Password, ForgotPassPanel);
+                signIn(UserName, Password, ForgotPassPanel, btnPanel);
 
             } catch (IOException ex) {
 
@@ -61,32 +63,38 @@ public class SignInPanel extends ClientFrame{
 
         });
         btnPanel.add(signinBtn);
-        btnPanel.setPreferredSize(new Dimension(250,40));
-        btnPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//        btnPanel.setMaximumSize(new Dimension(250,40));
+        btnPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         userPanel.add(userLabel);
         userPanel.add(userTF);
-        userPanel.setPreferredSize(new Dimension(250,40));
+        userPanel.setMaximumSize(new Dimension(250,40));
         userPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         //userPanel.setAlignmentY(userPanel.CENTER_ALIGNMENT);
 
         passPanel.add(passLabel);
         passPanel.add(passwordF);
-        passPanel.setSize(250,40);
+        passPanel.setMaximumSize(new Dimension(250,40));
         passPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         //passPanel.setAlignmentY(passPanel.CENTER_ALIGNMENT);
+        JPanel TopPanel = new JPanel();
+        TopPanel.setPreferredSize(new Dimension(250,75));
 
+
+        panelFull.add(TopPanel);
         panelFull.add(labelPanel);
         panelFull.add(userPanel);
         panelFull.add(passPanel);
         panelFull.add(btnPanel);
         panelFull.add(ForgotPassPanel);
+        panelFull.setMaximumSize(new Dimension(250,500));
         panelFull.setLayout(new BoxLayout(panelFull, BoxLayout.Y_AXIS));
-        panelFull.setPreferredSize(new Dimension(250,200));
+
+
 
         return panelFull;
     }
-    private void signIn(String username, String password, JPanel ForgotPassPanel) throws IOException {
+    private void signIn(String username, String password, JPanel ForgotPassPanel, JPanel btnPanel) throws IOException {
 
         File file = new File("UserList.txt");
 
@@ -100,9 +108,16 @@ public class SignInPanel extends ClientFrame{
 
                 if (username.equals(user[0]) && password.equals(user[1])) {
                     ShoppingCenterPanel shoppingCenterPanel = new ShoppingCenterPanel();
-                    FrameInit(shoppingCenterPanel.SCPInit(user), "Westminster Shopping Center");
-                } else {
 
+                    try{
+                        Dispose();
+                        FrameInit(shoppingCenterPanel.SCPInit(user), "Westminster Shopping Center");
+                        System.out.println("Sign In Success");
+                    }catch (NullPointerException ex) {
+                        throw new NullPointerException();
+                    }
+                } else {
+                    btnPanel.setMaximumSize(new Dimension(250,40));
                     ForgotPassPanel.setVisible(true);
                 }
             }

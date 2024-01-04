@@ -18,6 +18,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
     public static int UserCount = 0;
     public static int productCount = electCount + clothCount;
     public static Product[] products = new Product[50];
+    public static Product[] test = products;
 
     public static String warrantyUpdate() {
         String warrantyPeriod = "00";
@@ -232,9 +233,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public Double price() {
-        //update the price
-        // just ask the price
-        //return the price
         Scanner inputINT = new Scanner(System.in);
         System.out.println("What is the new price of the product?");
         Double Price = inputINT.nextDouble();
@@ -354,30 +352,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
         // TODO implement here
     }
 
-    @Override
-    public void saveProductList() {
-
-    }
-
-    //TODO: find why does this not print the first line (0EL)
-    //it only prints the last line
-    //fix print***
-/*
-    public static Product[] electronicObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
-        String prodBrandName = productArray[4];
-        String warrantyPeriod = productArray[5];
-        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
-        products[productCount] = electronics;
-        return products;
-    }
-    public static Product[] clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
-        String prodSize = productArray[4];
-        String prodColor = productArray[5];
-        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
-        products[productCount] = clothing;
-        return products;
-    }
-*/
 
 
     public void loadProductList() throws IOException {
@@ -394,50 +368,11 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 prodScanner.nextLine();
                 product_count++;
             }
-/*            for (int i =0; i<product_count ;i++){
-                String prodLine = line_person.readLine();
-                String[] productArray = prodLine.split("-");
-                String prodID = productArray[0];
-                String prodName = productArray[1];
-                int prodQuantity = Integer.parseInt(productArray[2]);
-                //String prodPrice = productArray[3];
-                double prodPrice = Double.parseDouble(productArray[3]);
-                if (prodID.contains("CL")){
-                    clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, product_count);
-                } else if (prodID.contains("EL")) {
-                    electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, product_count);
-                }
-                else{
-                    System.err.println("Invalid input");
-                }
-                //setting_person_object(person_id, name, surname, email, full_cost, Customers);
-            }*/
-
-            // close scanner
-            //prodScanner.close();
+            prodScanner.close();
         } catch (Exception e) {
             e.getStackTrace();
         }
 
-/*        for (int i =0; i<product_count ;i++){
-            String prodLine = line_person.readLine();
-            String[] productArray = prodLine.split("-");
-            String prodID = productArray[0];
-            String prodName = productArray[1];
-            int prodQuantity = Integer.parseInt(productArray[2]);
-            //String prodPrice = productArray[3];
-            double prodPrice = Double.parseDouble(productArray[3]);
-            if (prodID.contains("CL")){
-                clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, product_count);
-            } else if (prodID.contains("EL")) {
-                electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, product_count);
-            }
-            else{
-                System.err.println("Invalid input");
-            }
-            //setting_person_object(person_id, name, surname, email, full_cost, Customers);
-        }*/
-        //person_id=product_count;
         line_person.close();
         for (Product product : products) {
             if (product != null) {
@@ -456,6 +391,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
 
     public void managerMenu() throws ParseException, IOException {
 
+
+
         System.out.println("""
 
                 Please select an option:
@@ -466,28 +403,27 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 5. Open the GUI
                 0. Exit""");
         Scanner input = new Scanner(System.in);
-        Scanner inputINT = new Scanner(System.in);
-        int option = inputINT.nextInt();
+        String option = input.nextLine();
         switch (option) {
-            case 1 -> {
+            case "1" -> {
                 addProduct();
 
             }
-            case 2 -> {
+            case "2" -> {
                 updateProduct();
             }
-            case 3 -> {
+            case "3" -> {
                 deleteProduct();
 
             }
-            case 4 -> {
+            case "4" -> {
                 printProductList();
             }
-            case 5 -> {
+            case "5" -> {
                 OpenGUI();
             }
 
-            case 0 -> {
+            case "0" -> {
                 System.exit(0);
             }
             default -> throw new IllegalStateException("Unexpected value: " + option);

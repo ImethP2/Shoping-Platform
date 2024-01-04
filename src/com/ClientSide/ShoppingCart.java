@@ -1,18 +1,28 @@
 package com.ClientSide;
 
-import com.ManagerSide.*;
+
+import com.ManagerSide.Product;
+import com.ManagerSide.TextFileDBHandler;
+import com.ManagerSide.WestminsterShoppingManager;
+
+import static com.ManagerSide.WestminsterShoppingManager.productCount;
+import static com.ManagerSide.WestminsterShoppingManager.products;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.io.*;
 
 import static com.ClientSide.SignUpPanel.userArrayList;
 
-public class ShoppingCart {
+public class ShoppingCart extends ClientFrame{
+
     JPanel SCInit(ArrayList<String> cart, String[] user) throws IOException {
+
+
+
 
         JPanel panelAll = new JPanel();
         JPanel panelFull = new JPanel();
@@ -28,6 +38,8 @@ public class ShoppingCart {
         int SCDCloth = 0;
         int SCDElect = 0;
 
+
+
         String[] columnNames = {"Product", "Quantity", "Price"};
 
         for (int i = 0; i < cart.size(); i++) {
@@ -40,10 +52,10 @@ public class ShoppingCart {
                 SCDElect +=Integer.parseInt(productArray[2]);
                 System.out.println(SCDElect);
             }
-            for (Product product:WestminsterShoppingManager.products){
-                if(product.getProdID().equals(productArray[0])){
-                    System.out.println(product.getProdID());
-                    product.setProdQuantity(product.getProdQuantity() - Integer.parseInt(productArray[2]));
+
+            for (int x = 0; x<productCount; x++){
+                if(products[x].getProdID().equals(productArray[0])){
+                    products[x].setProdQuantity(products[x].getProdQuantity() - Integer.parseInt(productArray[2]));
                 }
             }
 
@@ -96,6 +108,7 @@ public class ShoppingCart {
         panelAll.add(panelFull);
         panelAll.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelAll.setPreferredSize(new Dimension(700, 400));
+
 
 
 

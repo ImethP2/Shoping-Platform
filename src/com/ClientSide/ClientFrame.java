@@ -1,24 +1,34 @@
 package com.ClientSide;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class ClientFrame {
-    private JFrame frame;
-    /*public ClientFrame(){
-        FrameInit();
-    }*/
+
+public class ClientFrame extends JFrame{
+    JFrame frame;
+
+    JFrame FrameCreate() {
+        frame = new JFrame();
+        return frame;
+    }
+
     void FrameInit(JPanel panel, String title) {
-        this.frame = new JFrame();
-        this.frame.setTitle(title);
-        this.frame.setSize(700, 500);
+//        this.frame = new JFrame();
+        frame = FrameCreate();
+        frame.setTitle(title);
+        frame.setSize(700, 500);
 //        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        this.frame.setVisible(true);
-        this.frame.add(panel);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setVisible(true);
+        frame.toFront();
+        frame.add(panel);
+        new Window(frame);
 
     }
-    public void Dispose(){
-        this.frame.dispose();
-    }
 
+    void Dispose() {
+        for(Window window:Window.getWindows()){
+            window.dispose();
+        }
+    }
 }

@@ -18,9 +18,15 @@ public class Main {
         Scanner input = new Scanner(System.in);
         String load = input.nextLine().toUpperCase();
         if (load.equalsIgnoreCase("Y")){
-            shoppingManager.loadProductList();
+            TextFileDBHandler.loadProductList();
+            do{
+                shoppingManager.managerMenu();
+            }while (true);
         }else if (load.equalsIgnoreCase("N")){
-            System.out.println("You can add products to the list");
+            TextFileDBHandler.deleteFile();
+            do{
+                shoppingManager.managerMenu();
+            }while (true);
         }else {
             System.err.println("Invalid Input");
         }

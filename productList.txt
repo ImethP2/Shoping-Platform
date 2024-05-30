@@ -1,3 +1,5 @@
 0EL-qwe-123-234.0-asd-123
 1CL-wer-456-567.0-678-sdf
-2EL-qwe-123-234.0-asd-123
+1EL-qwe-123-234.0-asd-123
+2EL-S23 Ultra-100-435000.0-Samsung-48
+2CL-tshirts-150-3500.0-L-black4CL-shirts-200-5000.0-XL-rec

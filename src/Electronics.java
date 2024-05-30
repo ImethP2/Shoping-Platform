@@ -50,6 +50,7 @@ public class Electronics extends Product{
             bufferedWriter.write(getProdID() + "-" + getProdName() + "-" + getProdQuantity() + "-" + getProdPrice() + "-" + getBrandName() + "-" + getWarrantyDate());
             bufferedWriter.newLine();
             bufferedWriter.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

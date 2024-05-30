@@ -1,5 +1,13 @@
 import java.io.*;
 
+/**
+ * TODO
+ * add products to the array
+ * check the countProduct() method
+ * the output is not correct
+ *
+ * handle the prodID error
+ */
 public class TextFileDBHandler {
     public static void createFile() throws IOException{
         File file = new File("productList.txt");
@@ -58,71 +66,217 @@ public class TextFileDBHandler {
                     double prodPrice = Double.parseDouble(productArray[3]);
 
                     if (prodID.contains("CL")) {
-                        WestminsterShoppingManager.clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
+                        WestminsterShoppingManager.clothCount++;
+                        clothingObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else if (prodID.contains("EL")) {
-                        WestminsterShoppingManager.electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
+                        WestminsterShoppingManager.electCount++;
+                        electronicObject(productArray, prodID, prodName, prodQuantity, prodPrice, i);
                     } else {
                         System.err.println("Text File Save Error");
                     }
+
                 }
+                for (Product product: WestminsterShoppingManager.products){
+
+                }
+                prodLineReader.close();
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+        }else{
+            System.err.println("File Not Found");
         }
+    }
+    public static void electronicObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
+        String prodBrandName = productArray[4];
+        String warrantyPeriod = productArray[5];
+        Electronics electronics = new Electronics(prodID, prodName, prodQuantity, prodPrice, prodBrandName, warrantyPeriod);
+        WestminsterShoppingManager.products[productCount] = electronics;
+    }
+    public static void clothingObject(String[] productArray, String prodID, String prodName, int prodQuantity, double prodPrice, int productCount) {
+        String prodSize = productArray[4];
+        String prodColor = productArray[5];
+        Clothing clothing = new Clothing(prodID, prodName, prodQuantity, prodPrice, prodSize, prodColor);
+        WestminsterShoppingManager.products[productCount] = clothing;
     }
     public static int countProduct() throws IOException {
         File file = new File("productList.txt");
 
         int product_count = 0;
-
+        String prodLine;
         if (file.exists()) {
-            BufferedReader prodLineReader = new BufferedReader(new FileReader("productList.txt"));
-            while (prodLineReader.readLine() != null) {
-                product_count++;
+            try {
+                BufferedReader prodLineReader = new BufferedReader(new FileReader("productList.txt"));
+                while ((prodLine = prodLineReader.readLine()) != null) {
+                    String[] productArray = prodLine.split("-");
+                    String prodID = productArray[0];
+                    if (prodID.contains("CL")) {
+                        WestminsterShoppingManager.clothCount++;
+                    } else if (prodID.contains("EL")) {
+                        WestminsterShoppingManager.electCount++;
+                    }
+
+                }
+                product_count = WestminsterShoppingManager.electCount + WestminsterShoppingManager.clothCount;
+                WestminsterShoppingManager.productCount = product_count;
+            }catch (Exception e){
+                e.printStackTrace();
             }
+        }else{
+            createFile();
         }
         return product_count;
     }
-    public static void addProduct(){
+    public static void addProduct( Electronics electronics) throws IOException {
         //TODO add product to text file
         File file = new File("productList.txt");
         if (file.exists()){
             try{
                 boolean list = checkProduct();
-                if (list = false){
-
-
-
+                if (list){
+                    electronics.save();
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else{
+            createFile();
+            addProduct(electronics);
         }
     }
-    public static void deleteProduct(){
+    public static void addProduct( Clothing clothing) throws IOException {
+        //TODO add product to text file
+        File file = new File("productList.txt");
+        if (file.exists()){
+            try{
+                boolean list = checkProduct();
+                if (list) {
+                    clothing.save();
+                    //not sure.
+                    //check it
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            createFile();
+            addProduct(clothing);
+        }
+    }
+    public static void deleteFile(){
         //TODO delete product from text file
+        File file = new File("productList.txt");
+        if (file.exists()){
+            file.delete();
+            System.out.println("File Deleted Successfully");
+        }
     }
-    public static void updateElectronics(){
-        //TODO update electronics in text file
+
+    public static void UpdateTempFile(){
+        //TODO create a temp file
+        File file1 = new File("productList.txt");
+        File file2 = new File("tempProductList.txt");
+
+        file1.delete();
+        file2.renameTo(file1);
     }
-    public static void updateClothing(){
-        //TODO update clothing in text file
+    public static void updateClothes(Clothing clothing, String ClotheProdID){
+        //TODO update quantity of a record in text file
+        /**
+         * 1. Read the file
+         * 2. Find the record
+         * 3. Delete the record
+         * 4. Add the record with updated quantity
+         **/
+        /**
+         * since java cant delete lines from a text file update the following line to a new line
+         * then create a temp file and add the records to it without the new lines
+         * delete the previous file
+         * rename the temp file to original name
+         **/
+        File file = new File("productList.txt");
+        File file2 = new File("tempProductList.txt");
+        if (file.exists()){
+            try {
+                BufferedReader prodLineReader = new BufferedReader(new FileReader(file));
+                BufferedWriter prodLineWriter = new BufferedWriter(new FileWriter(file2));
+
+                for (int i = 0; i<countProduct(); i++){
+                    String prodLine = prodLineReader.readLine();
+                    String[] productArray = prodLine.split("-");
+                    String prodID = productArray[0];
+                    if (prodID.equals(ClotheProdID)){
+                        //prodLineWriter.write(clothing.getProdID() + "-" + clothing.getProdName() + "-" + clothing.getProdQuantity() + "-" + clothing.getProdPrice() + "-" + clothing.getSize() + "-" + clothing.getColor());
+                        //prodLineWriter.newLine();
+                        clothing.save();
+                    }else{
+                        prodLineWriter.write(prodLine);
+                        prodLineWriter.newLine();
+                    }
+
+                }
+                prodLineReader.close();
+                prodLineWriter.close();
+
+                UpdateTempFile();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.err.println("File Not Found");
+        }
     }
+    public static void updateElectronics(Electronics electronics, String ElectProdID){
+        //TODO update quantity of a record in text file
+        File file = new File("productList.txt");
+        File file2 = new File("tempProductList.txt");
+        if (file.exists()){
+            try {
+                BufferedReader prodLineReader = new BufferedReader(new FileReader(file));
+                BufferedWriter prodLineWriter = new BufferedWriter(new FileWriter(file2));
+
+                for (int i = 0; i<countProduct(); i++){
+                    String prodLine = prodLineReader.readLine();
+                    String[] productArray = prodLine.split("-");
+                    String prodID = productArray[0];
+                    if (prodID.equals(ElectProdID)){
+                        //prodLineWriter.write(electronics.getProdID() + "-" + electronics.getProdName() + "-" + electronics.getProdQuantity() + "-" + electronics.getProdPrice() + "-" + electronics.getBrandName() + "-" + electronics.getWarrantyDate());
+                        //prodLineWriter.newLine();
+                        electronics.save();
+                    }else{
+                        prodLineWriter.write(prodLine);
+                        prodLineWriter.newLine();
+                    }
+
+                }
+                prodLineReader.close();
+                prodLineWriter.close();
+
+                UpdateTempFile();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.err.println("File Not Found");
+        }
+    }
+
     public static void printProductList(){
         //TODO print product list from text file
+
     }
     public static boolean checkProduct(){
-        boolean listFull = false;
+        boolean listFull = true;
         //TODO check if the system has more than 50 products
         File file = new File("productList.txt");
         if (file.exists()){
             try {
                 if (countProduct() >= 50){
                     System.err.println("The system has more than 50 products");
-                    listFull = true;
-                    return listFull;
-                }else{
-                    return listFull;
+                    listFull = false;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
